@@ -4,6 +4,9 @@ import com.sorokaandriy.rest_api_mongodb.collection.Person;
 import com.sorokaandriy.rest_api_mongodb.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +53,18 @@ public class PersonController {
     public ResponseEntity<List<Person>> getByAgeBetween(@RequestParam("minAge") Integer minAge,
                                                         @RequestParam("maxAge") Integer maxAge){
         return ResponseEntity.ok(service.getByAgeBetween(minAge,maxAge));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Person>> search(
+            @RequestParam(required = false) String firstname,
+            @RequestParam(required = false) Integer minAge,
+            @RequestParam(required = false) Integer maxAge,
+            @RequestParam(required = false) String city,
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "5") Integer size
+    ){
+        Pageable pageable = PageRequest.of(page,size);
+        return ResponseEntity.ok(service.search(firstname,minAge,maxAge,city,pageable));
     }
 }
