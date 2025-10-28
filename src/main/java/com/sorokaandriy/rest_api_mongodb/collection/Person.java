@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @Builder
-@Document(collection = "person")
+@Document(collection = "pr")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Person {
 

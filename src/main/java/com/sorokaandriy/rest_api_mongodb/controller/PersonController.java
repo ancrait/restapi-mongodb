@@ -56,7 +56,7 @@ public class PersonController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<Person>> search(
+    public ResponseEntity<List<Person>> search(
             @RequestParam(required = false) String firstname,
             @RequestParam(required = false) Integer minAge,
             @RequestParam(required = false) Integer maxAge,
@@ -65,6 +65,7 @@ public class PersonController {
             @RequestParam(defaultValue = "5") Integer size
     ){
         Pageable pageable = PageRequest.of(page,size);
-        return ResponseEntity.ok(service.search(firstname,minAge,maxAge,city,pageable));
+        Page<Person> people = service.search(firstname,minAge,maxAge,city,pageable);
+        return ResponseEntity.ok(people.getContent());
     }
 }
